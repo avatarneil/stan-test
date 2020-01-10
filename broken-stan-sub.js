@@ -4,7 +4,7 @@ const { StringDecoder } = require("string_decoder");
 
 const natsClient = NATS.connect({
   url: "nats://localhost:4222",
-  userCreds: "./stan.creds",
+  // userCreds: "./stan.creds",
   encoding: "binary"
 });
 
