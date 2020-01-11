@@ -1,16 +1,17 @@
 const NATS = require("nats");
 const stan = require("node-nats-streaming");
-const { StringDecoder } = require("string_decoder");
 
 const natsClient = NATS.connect({
-  url: "nats://localhost:4222",
+  url: "nats://0.0.0.0:4222",
   // userCreds: "./stan.creds",
   encoding: "binary"
 });
 
-const natss = stan.connect("stan", "hello-im-a-client", { url: "nats://localhost:4222", nc: natsClient, connectTimeout: 10000 });
+natsClient.on('connect', () => {
+  console.log('I am a connected boi')
+})
 
-const decoder = new StringDecoder("utf8");
+const natss = stan.connect("test-cluster", "hello-im-a-client", { url: "nats://0.0.0.0:4222", nc: natsClient, connectTimeout: 10000 });
 
 natss.on("connect", () => {
   console.log("I'm connected!");
@@ -21,8 +22,7 @@ natss.on("connect", () => {
   });
 
   eventSubscription.on("message", msg => {
-    // const { data } = msg.getRawData().toString();
-    console.log(decoder.write(msg.msg.array[3]));
+    console.log(msg.getRawData().toString());
     msg.ack();
   });
 });

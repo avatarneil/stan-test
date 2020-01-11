@@ -7,7 +7,7 @@ const natsClient = NATS.connect({
   encoding: "binary"
 });
 
-const natss = stan.connect("stan", "hello-im-a-client-pub", { nc: natsClient });
+const natss = stan.connect("test-cluster", "hello-im-a-client-pub", { nc: natsClient });
 
 natss.on("connect", () => {
   console.log("I'm connected!");
